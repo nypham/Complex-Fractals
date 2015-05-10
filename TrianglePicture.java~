@@ -1,0 +1,19 @@
+import java.awt.Graphics;
+
+public class TrianglePicture extends FractalPicture{
+  
+  private Triangle[] triangles;
+  
+  public TrianglePicture(Triangle[] triangles){
+    super(triangles);
+    this.triangles = triangles;
+  }
+  
+  public TriangleFractal[][] getBaseFractals(){
+    TriangleFractal[][] arrayOfBaseFracts = new TriangleFractal[triangles.length][];
+    for(int i = 0; i < triangles.length; i++){
+      arrayOfBaseFracts[i] = new TriangleFractal(triangles[i]).subFractals();
+    }
+    return arrayOfBaseFracts;
+  }
+}

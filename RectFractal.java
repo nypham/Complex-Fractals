@@ -1,0 +1,90 @@
+/**
+ * This class represents a rectangle fractal.
+ * 
+ * @author  Ny Pham
+ */
+
+import java.awt.Graphics;
+
+public class RectFractal extends Fractal{
+  
+  /**
+   * This stores the base rectangle.
+   */
+  private Rectangle rectangle;
+
+  /**
+   * This initializes the base shape of the fractal.
+   * 
+   * @param rectangle  the base shape used to create the fractal
+   */
+  public RectFractal(Rectangle rectangle){
+    super(rectangle);
+    this.rectangle = rectangle;
+  }
+  
+  /**
+   * This method returns an array of subfractals that form the fractal.
+   * 
+   * @return  the array of subfractals
+   */
+  @Override
+  public RectFractal[] subFractals(){
+    int width = rectangle.getWidth();                                                  //stores the width of the rectangle
+    int height = rectangle.getHeight();                                                //stores the height of the rectangle
+    Point referencePt = rectangle.getReferencePoint();                                 //stores the point closests to the origin of the screen
+    int subfractWidth = width / 3;                                                     //stores the width of the subfractals to be made
+    int subfractHeight = height / 3;                                                   //stores the height of the subfractals to be made
+    //stores the subrectangle located in the top left
+    Rectangle rectangle1 = new Rectangle(referencePt, new Point(referencePt.getX() + subfractWidth, referencePt.getY() + subfractHeight));
+    //stores the subrectangle located on the top row 
+    Rectangle rectangle2 = new Rectangle(new Point(referencePt.getX() + subfractWidth, referencePt.getY()), new Point(referencePt.getX() + subfractWidth + subfractWidth, referencePt.getY() + subfractHeight));
+    //stores the subrectangle located on the top row
+    Rectangle rectangle3 = new Rectangle(new Point(referencePt.getX() + subfractWidth + subfractWidth, referencePt.getY()), new Point(referencePt.getX() + width, referencePt.getY() + subfractHeight));
+    //stores the subrectangle located on the middle row
+    Rectangle rectangle4 = new Rectangle(new Point(referencePt.getX(), referencePt.getY() + subfractHeight), new Point(referencePt.getX() + subfractWidth, referencePt.getY() + subfractHeight + subfractHeight));
+    //stores the subrectangle located on the middle row
+    Rectangle rectangle5 = new Rectangle(new Point(referencePt.getX() + subfractWidth + subfractWidth, referencePt.getY() + subfractHeight), new Point(referencePt.getX() + width, referencePt.getY() + subfractHeight + subfractHeight));
+    //stores the subrectangle located on the third row
+    Rectangle rectangle6 = new Rectangle(new Point(referencePt.getX(), referencePt.getY() + subfractHeight + subfractHeight), new Point(referencePt.getX() + subfractWidth, referencePt.getY() + height));
+    //stores the subrectangle located on the third row
+    Rectangle rectangle7 = new Rectangle(new Point(referencePt.getX() + subfractWidth, referencePt.getY() + subfractHeight + subfractHeight), new Point(referencePt.getX() + subfractWidth + subfractWidth, referencePt.getY() + height));
+    //stores the subrectangle located on the third row
+    Rectangle rectangle8 = new Rectangle(new Point(referencePt.getX() + subfractWidth + subfractWidth, referencePt.getY() + subfractHeight + subfractHeight), new Point(referencePt.getX() + width, referencePt.getY() + height));
+    RectFractal rectFract1 = new RectFractal(rectangle1);                    //stores the subfractal 
+    RectFractal rectFract2 = new RectFractal(rectangle2);                    //stores the subfractal
+    RectFractal rectFract3 = new RectFractal(rectangle3);                    //stores the subfractal
+    RectFractal rectFract4 = new RectFractal(rectangle4);                    //stores the subfractal
+    RectFractal rectFract5 = new RectFractal(rectangle5);                    //stores the subfractal
+    RectFractal rectFract6 = new RectFractal(rectangle6);                    //stores the subfractal
+    RectFractal rectFract7 = new RectFractal(rectangle7);                    //stores the subfractal
+    RectFractal rectFract8 = new RectFractal(rectangle8);                    //stores the subfractal
+    //stores the array of subfractals
+    RectFractal[] arrayOfRectFract = new RectFractal[]{rectFract1, rectFract2, rectFract3, rectFract4, rectFract5, rectFract6, rectFract7, rectFract8};
+    return arrayOfRectFract;
+  }
+  
+  /**
+   * Draws the rectangle fractal.
+   * 
+   * @param  level     the number of layers of fractals
+   * @param  graphics  the graphics context used to draw the fractal.
+   */
+  @Override
+  public void draw(int level, Graphics graphics){
+    if(level < 0)
+      throw new IllegalArgumentException("Fractal levels cannot be negative.");
+    rectangle.draw(graphics);
+    if(level == 0)
+      rectangle.draw(graphics);
+    else{
+      RectFractal[] subfractals = this.subFractals();                   //this temporarily stores the subfractals that form the fractal
+      //this loop works by going through each element in the array of subfractals
+      //and by recursion, drawing each line in the subfractal
+      for(int i = 0; i < subfractals.length; i++){
+        RectFractal temp = subfractals[i];                              //temporarily stores the element in the array
+        temp.draw(level - 1, graphics);
+      }
+    }
+  }
+}

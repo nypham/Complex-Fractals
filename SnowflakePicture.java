@@ -1,0 +1,74 @@
+/**
+ * This class represents a picture composed of snowflake fractals.
+ * 
+ * @author  Ny Pham
+ */
+
+import java.awt.Graphics;
+
+public class SnowflakePicture extends FractalPicture{
+  
+  /**
+   * Stores the base shape for the base fractal.
+   */
+  private BaseShapes[] baseShapes;
+  
+  /**
+   * Initializes the base shape for the base fractal.
+   *
+   * @param  baseShape  the base shape to be used to create the base fractals
+   */
+  public SnowflakePicture(BaseShapes[] baseShapes){
+    super(baseShapes);
+    this.baseShapes = baseShapes;
+  }
+  
+  /**
+   * This draws the picture of the fractal.
+   * 
+   * @param  level     the number of layers of fractals that will exist
+   * @param  graphics  the class used to draw the fractal
+   */
+  @Override
+  public void draw(int level, Graphics graphics){
+    if(level < 0)
+      throw new IllegalArgumentException("Fractal levels cannot be negative.");
+    if(level == 0){
+      for(int i = 0; i < baseShapes.length; i++){
+        baseShapes[i].draw(graphics);
+      }
+    }
+    else{
+      Fractal[][] baseFracts = getBaseFractals();                             //stores the array of fractals that form the picture
+      for(int i = 0; i < baseFracts.length; i++){
+        //this loop works by going through each element in the array of base fractals and drawing each one
+        for(int j = 0; j < baseFracts[i].length; j++){
+          baseFracts[i][j].draw(level, graphics);
+        }
+      }
+    }
+  }
+  
+  /**
+   * This method returns an array of the base fractals used to create the picture.
+   * 
+   * @return  the array of base fractals
+   */
+  @Override
+  public FlakeFractal[][] getBaseFractals(){
+    BaseShapes[] baseShapes = this.baseShapes;
+    FlakeFractal[][] arrayOfBaseFractals = new FlakeFractal[baseShapes.length][];
+    for(int i = 0; i < baseShapes.length; i++){
+      int numSides = baseShapes[i].getNumSides();
+      Line[] linesOfFract = baseShapes[i].getLines();                  //stores the lines that form the base shape
+      FlakeFractal[] baseFlakeFract = new FlakeFractal[numSides];  //stores the array of base fractals that form the picture
+      //this loop works by taking each element in the array of lines that form the base shape
+      //and creating a fractal with it and then storing it in the new array for base fractals
+      for(int j = 0; j < numSides; j++){
+        baseFlakeFract[j] = new FlakeFractal(linesOfFract[j]);
+      }
+      arrayOfBaseFractals[i] = baseFlakeFract;
+    }
+    return arrayOfBaseFractals;
+  }
+}

@@ -1,0 +1,48 @@
+/**
+ * This class represents a picture of a tree fractal.
+ * 
+ * @author  Ny Pham
+ */
+
+public class TreePicture extends FractalPicture{
+  
+  /**
+   * Stores the base shape of the subfractals.
+   */
+  private BaseShapes[] baseShapes;
+  
+  /**
+   * Initializes the base shape of the subfractals that form the picture.
+   * 
+   * @param  baseShape  the shape used to create the base fractals and picture
+   */
+  public TreePicture(BaseShapes[] baseShapes){
+    super(baseShapes);
+    if(baseShapes.length == 0)
+      throw new IllegalArgumentException("Empty array.");
+    this.baseShapes = baseShapes;
+  }
+  
+  /**
+   * Returns an array of the base fractals that form the picture.
+   * 
+   * @return  the array of base fractals
+   */
+  @Override
+  public TreeFractal[][] getBaseFractals(){
+    BaseShapes[] baseShapes = this.baseShapes;
+    TreeFractal[][] arrayOfBaseFractals = new TreeFractal[baseShapes.length][];
+    for(int i = 0; i < baseShapes.length; i++){
+      int numSides = baseShapes[i].getNumSides();                      //stores the number of sides in the base shape
+      Line[] linesOfFract = baseShapes[i].getLines();                  //stores the lines that form the base shape
+      TreeFractal[] baseTreeFract = new TreeFractal[numSides];         //stores the array of base fractals that form the picture
+      //this loop works by taking each element in the array of lines that form the base shape
+      //and creating a fractal with it and then storing it in the new array for base fractals
+      for(int j = 0; j < linesOfFract.length; j++){
+        baseTreeFract[j] = new TreeFractal(linesOfFract[j]);
+      }
+      arrayOfBaseFractals[i] = baseTreeFract;
+    }
+    return arrayOfBaseFractals;
+  }
+}

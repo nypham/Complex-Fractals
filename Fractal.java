@@ -1,0 +1,63 @@
+/**
+ * This abstract class will represent the idea of a fractal.
+ * 
+ * @author  Ny Pham
+ */
+
+import java.awt.Graphics;
+
+public abstract class Fractal{
+  
+  /**
+   * Stores the base shape of the fractal.
+   */
+  private BaseShapes baseShapes;
+  
+  /**
+   * Initalizes the base shape of the fractal.
+   * 
+   * @param  baseShapes  the base shape used to create the fractal
+   */
+  public Fractal(BaseShapes baseShapes){
+    this.baseShapes = baseShapes;
+  } 
+  
+  /**
+   * Returns an array of the subfractals.
+   * 
+   * @return  the array of the subfractals
+   */
+  public abstract Fractal[] subFractals();
+  
+  /**
+   * Draws the fractal.
+   * 
+   * @param  level     the number of layers of fractals that will exist
+   * @param  graphics  the class used to draw the fractal
+   */
+  public void draw(int level, Graphics graphics){
+    if(level < 0)
+      throw new IllegalArgumentException("Fractal levels cannot be negative.");
+    if(level == 0){
+      baseShapes.draw(graphics);
+    }
+    else{
+      Fractal[] subFractals = this.subFractals();                        //this temporarily stores the subfractals that form the fractal
+      //this loop works by going through each element in the array of subfractals
+      //and by recursion, drawing each line in the subfractal
+      for(int i = 0; i < subFractals.length; i++){
+        Fractal temp = subFractals[i];                                  //temporarily stores the element in the array
+        temp.draw(level - 1, graphics);
+      }
+    }
+  }
+  
+  /**
+   * Returns the base shape used to create the fractal.
+   * 
+   * @return  the line used to create the Flake Fractal
+   */
+  public BaseShapes getBaseShapes(){
+    return baseShapes;
+  }
+}

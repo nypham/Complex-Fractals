@@ -1,0 +1,54 @@
+/**
+ * This abstract class repsents the base shape for fractals.
+ * 
+ * @author  Ny Pham
+ */
+
+import java.awt.Graphics;
+
+public abstract class BaseShapes{
+  
+  /**
+   * stores the number of sides in the base shape
+   */
+  private int numSides;
+  
+  /**
+   * initializes the number of sides in the base shape
+   * 
+   * @param  numSides  the number of sides in the shape
+   */
+  public BaseShapes(int numSides){
+    this.numSides = numSides;
+  }
+  
+  /**
+   * returns the number of sides on the base shape
+   * 
+   * @return  the number of sides on the shape
+   */
+  public int getNumSides(){
+    return numSides;
+  }
+   
+   /**
+    * returns the lines that form the base shape
+    * 
+    * @return  an array of lines that form the geometric object
+    */
+   public abstract Line[] getLines();
+   
+   /**
+    * draws geometric object
+    * 
+    * @param  graphics  the class used to draw the geometric object
+    */
+   public void draw(Graphics graphics){
+     //stores the array of lines that form the base shape
+     Line[] linesFormingShape = getLines();
+     //this loop works by getting each element in the array of lines and drawing each line
+     for(int i = 0; i < linesFormingShape.length; i++){
+       graphics.drawLine(linesFormingShape[i].getFirstPoint().getX(), linesFormingShape[i].getFirstPoint().getY(), linesFormingShape[i].getSecondPoint().getX(), linesFormingShape[i].getSecondPoint().getY());
+     }
+   }
+}

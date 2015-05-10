@@ -1,0 +1,55 @@
+/**
+ * This class will represent a snowflake-type fractal whose base shape is a line.
+ * 
+ * @author  Ny Pham
+ */
+
+public class FlakeFractal extends Fractal{
+  /**
+   * Stores a line as its base shape.
+   */
+  private Line line;
+  
+  /**
+   * Initalizes the line.
+   * 
+   * @param  line  the line used to create the fractal
+   */
+  public FlakeFractal(Line line){
+    super(line);
+    this.line = line;
+  }
+  
+  /**
+   * Returns an array of subfractals.
+   * 
+   * @return  the array of subfractals
+   */
+  @Override
+  public FlakeFractal[] subFractals(){
+    //stores the first point of the line, also represents the first point of line 1
+    Point point1 = line.getFirstPoint();
+    //stores the second point of the line, also represents the last point of line 4
+    Point point5 = line.getSecondPoint();
+    //stores the second point of line 1
+    Point point2 = new Point(point1.getX() + ((point5.getX() - point1.getX()) / 3), point1.getY() + ((point5.getY() - point1.getY()) / 3));
+    //stores the first point of line 4
+    Point point4 = new Point(point1.getX() + ((point5.getX() - point1.getX()) * 2 / 3), point1.getY() + ((point5.getY() - point1.getY()) * 2 / 3));
+    //adjust and temporarily stores the point that is to be rotated
+    Point temporaryPoint = new Point(point2.getX() - point4.getX(), point2.getY() - point4.getY());
+    temporaryPoint.rotate(Math.PI / 3);
+    //stores the point of the tip of the equilateral triangle formed by the fractal
+    Point point3 = new Point(temporaryPoint.getX() + point4.getX(), temporaryPoint.getY() + point4.getY());
+    //stores the fractal that exists on the first line that forms the flake fractal
+    FlakeFractal fractal1 = new FlakeFractal(new Line(point1, point2));
+    //stores the fractal that exists on the second line that forms the flake fractal
+    FlakeFractal fractal2 = new FlakeFractal(new Line(point2, point3));
+    //stores the fractal that exists on the third line that forms the flake fractal
+    FlakeFractal fractal3 = new FlakeFractal(new Line(point3, point4));
+    //stores the fractal that exists on the four line that forms the flake fractal
+    FlakeFractal fractal4 = new FlakeFractal(new Line(point4, point5));
+    //stores the array of new flake fractals
+    FlakeFractal[] arrayOfFlakeFractals = new FlakeFractal[]{fractal1, fractal2, fractal3, fractal4};                                                                //stores the array of lines that form the triangle
+    return arrayOfFlakeFractals;
+  }
+}
